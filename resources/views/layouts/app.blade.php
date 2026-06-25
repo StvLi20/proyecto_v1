@@ -76,7 +76,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->routeIs('favoritos.*') ? 'active' : '' }}">
+                        <a href="{{ route('favoritos.index') }}" class="nav-link {{ request()->routeIs('favoritos.*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-star"></i>
                             <p>Mis Favoritos</p>
                         </a>

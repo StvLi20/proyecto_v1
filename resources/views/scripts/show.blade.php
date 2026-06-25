@@ -141,6 +141,24 @@
                 <hr class="my-1">
                 @endif
 
+                {{-- Botón favorito --}}
+@php
+    $esFavorito = \App\Models\Favorito::where('usuario_id', Auth::id())
+        ->where('script_id', $script->id)
+        ->exists();
+@endphp
+            <form method="POST" action="{{ route('favoritos.toggle', $script) }}">
+                @csrf
+                        <button type="submit" class="btn btn-sm w-100 {{ $esFavorito ? 'btn-warning' : 'btn-outline-warning' }}">
+                            <i class="bi bi-star{{ $esFavorito ? '-fill' : '' }} me-2"></i>
+                            {{ $esFavorito ? 'Quitar de favoritos' : 'Agregar a favoritos' }}
+                        </button>
+                    </form>
+
+                    <a href="{{ route('scripts.index') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-2"></i>Volver al catálogo
+                    </a>
+
                 <a href="{{ route('scripts.index') }}" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left me-2"></i>Volver al catálogo
                 </a>

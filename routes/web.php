@@ -39,4 +39,8 @@ Route::middleware(['auth'])->group(function () {
     // Scripts
     Route::resource('scripts', App\Http\Controllers\ScriptController::class);
 
+    // Favoritos
+    Route::get('/favoritos', [App\Http\Controllers\FavoritoController::class, 'index'])->name('favoritos.index');
+    Route::post('/favoritos/{script}/toggle', [App\Http\Controllers\FavoritoController::class, 'toggle'])->name('favoritos.toggle');
+
 });
