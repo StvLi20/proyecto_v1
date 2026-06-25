@@ -43,4 +43,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/favoritos', [App\Http\Controllers\FavoritoController::class, 'index'])->name('favoritos.index');
     Route::post('/favoritos/{script}/toggle', [App\Http\Controllers\FavoritoController::class, 'toggle'])->name('favoritos.toggle');
 
+    // Perfil
+    Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil.index');
+    Route::post('/perfil/foto', [App\Http\Controllers\PerfilController::class, 'actualizarFoto'])->name('perfil.foto');
+    Route::post('/perfil/password', [App\Http\Controllers\PerfilController::class, 'actualizarPassword'])->name('perfil.password');
+
 });

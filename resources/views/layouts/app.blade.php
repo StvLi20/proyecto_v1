@@ -32,20 +32,32 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle fs-5"></i>
-                        <span>{{ Auth::user()->nombre }}</span>
-                        <span class="badge bg-secondary">{{ Auth::user()->rol }}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <form method="POST" action="{{ route('auth.logout') }}">
-                                @csrf
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+    @if(Auth::user()->foto)
+        <img src="{{ asset('storage/' . Auth::user()->foto) }}"
+            class="rounded-circle"
+            style="width:32px; height:32px; object-fit:cover;">
+    @else
+        <i class="bi bi-person-circle fs-5"></i>
+    @endif
+    <span>{{ Auth::user()->nombre }}</span>
+    <span class="badge bg-secondary">{{ Auth::user()->rol }}</span>
+</a>
+<ul class="dropdown-menu dropdown-menu-end">
+    <li>
+        <a class="dropdown-item" href="{{ route('perfil.index') }}">
+            <i class="bi bi-person me-2"></i> Mi perfil
+        </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+    <li>
+        <form method="POST" action="{{ route('auth.logout') }}">
+            @csrf
+            <button type="submit" class="dropdown-item text-danger">
+                <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+            </button>
+        </form>
+    </li>
+</ul>
                 </li>
             </ul>
         </div>

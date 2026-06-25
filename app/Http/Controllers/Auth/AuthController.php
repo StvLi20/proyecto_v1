@@ -24,49 +24,38 @@ class AuthController extends Controller
      * Procesa el intento de login
      */
     public function login(Request $request)
-    {
-        
-        // Validar los campos del formulario
-        $request->validate([
-            'correo'   => 'required|email',
-            'password' => 'required|min:1',
-        ], [
-            'correo.required'   => 'El correo es obligatorio.',
-            'correo.email'      => 'Ingresá un correo válido.',
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min'      => 'La contraseña debe tener al menos 14 caracteres.',
-        ]);
+{
+    // Validar los campos del formulario
+    $request->validate([
+        'correo'   => 'required|email',
+        'password' => 'required|min:1',
+    ], [
+        'correo.required'   => 'El correo es obligatorio.',
+        'correo.email'      => 'Ingresá un correo válido.',
+        'password.required' => 'La contraseña es obligatoria.',
+        'password.min'      => 'La contraseña debe tener al menos 14 caracteres.',
+    ]);
 
-        
+    // Buscar usuario por correo manualmente
+    $usuario = \App\Models\Usuario::where('correo', $request->correo)->first();
 
-        // Intentar autenticar con correo y password
-        $credentials = [
-            'correo'   => $request->correo,
-            'password' => $request->password,
-            
-        ];
+    if ($usuario && \Illuminate\Support\Facades\Hash::check($request->password, $usuario->password)) {
+        Auth::login($usuario);
+        $request->session()->regenerate();
 
-       
-
-
-        if (Auth::attempt($credentials)) {
-            // Regenerar sesión para evitar session fixation
-            $request->session()->regenerate();
-            
-
-            // Si es primer login, forzar cambio de contraseña
-            if (Auth::user()->primer_login) {
-                return redirect()->route('auth.cambiar-password');
-            }
-
-            return redirect('/dashboard');  // cambiá route() por url directa
+        // Si es primer login, forzar cambio de contraseña
+        if (Auth::user()->primer_login) {
+            return redirect()->route('auth.cambiar-password');
         }
 
-        // Credenciales incorrectas
-        return back()->withErrors([
-            'correo' => 'Correo o contraseña incorrectos.',
-        ])->onlyInput('correo');
+        return redirect('/dashboard');
     }
+
+    // Credenciales incorrectas
+    return back()->withErrors([
+        'correo' => 'Correo o contraseña incorrectos.',
+    ])->onlyInput('correo');
+}
 
     /**
      * Cierra la sesión

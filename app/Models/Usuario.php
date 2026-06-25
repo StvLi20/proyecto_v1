@@ -10,6 +10,7 @@ class Usuario extends Authenticatable
     use Notifiable;
 
     protected $table = 'usuarios';
+    const UPDATED_AT = null;
 
     protected $hidden = [
         'password',
@@ -22,7 +23,8 @@ class Usuario extends Authenticatable
         'password',
         'rol',
         'primer_login',
-        'creado_por'
+        'creado_por',
+        'foto',
     ];
 
     protected $casts = [
@@ -30,11 +32,6 @@ class Usuario extends Authenticatable
         
     ];
 
-    // Laravel usa 'email' por defecto, nosotros usamos 'correo'
-    public function getAuthIdentifierName()
-    {
-        return 'correo';
-    }
 
     // El admin que creó este usuario
     public function creadoPor()
@@ -60,9 +57,11 @@ class Usuario extends Authenticatable
         return $this->hasMany(Favorito::class, 'usuario_id');
     }
 
-    // Devolver siempre el id numérico
-    public function getAuthIdentifier()
+
+
+    // Para que Laravel recuerde la sesión por id y no por correo
+    public function getAuthPassword()
     {
-        return $this->id;
+        return $this->password;
     }
 }
