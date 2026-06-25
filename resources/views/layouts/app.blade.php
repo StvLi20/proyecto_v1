@@ -98,7 +98,7 @@
                     <li class="nav-header text-muted small px-3 mt-2">ADMINISTRACIÓN</li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->routeIs('admin.usuarios.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.usuarios.index') }}" class="nav-link {{ request()->routeIs('admin.usuarios.*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-people"></i>
                             <p>Usuarios</p>
                         </a>

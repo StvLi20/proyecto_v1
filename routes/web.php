@@ -48,4 +48,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/perfil/foto', [App\Http\Controllers\PerfilController::class, 'actualizarFoto'])->name('perfil.foto');
     Route::post('/perfil/password', [App\Http\Controllers\PerfilController::class, 'actualizarPassword'])->name('perfil.password');
 
+    // Administración - solo admin
+    Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::resource('usuarios', App\Http\Controllers\Admin\UsuarioController::class)->except(['show']);
+    Route::post('usuarios/{usuario}/reset-password', [App\Http\Controllers\Admin\UsuarioController::class, 'resetPassword'])->name('usuarios.reset-password');
+});
+
 });
