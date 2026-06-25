@@ -36,4 +36,7 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
+    // Scripts
+    Route::resource('scripts', App\Http\Controllers\ScriptController::class);
+
 });

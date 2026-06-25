@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Script extends Model
 {
     protected $table = 'scripts';
+    const UPDATED_AT = null;
     protected $fillable = [
         'titulo',
         'descripcion',

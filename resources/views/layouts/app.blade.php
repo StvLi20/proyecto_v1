@@ -69,7 +69,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->routeIs('scripts.*') ? 'active' : '' }}">
+                        <a href="{{ route('scripts.index') }}" class="nav-link {{ request()->routeIs('scripts.*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-code-square"></i>
                             <p>Scripts</p>
                         </a>

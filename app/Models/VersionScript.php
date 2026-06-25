@@ -12,6 +12,9 @@ class VersionScript extends Model
         'codigo_anterior',
         'modificado_por'
     ];
+    protected $casts = [
+    'created_at' => 'datetime',
+    ];
     public $timestamps = false;
 
     // Script al que pertenece esta versión
