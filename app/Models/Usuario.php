@@ -59,4 +59,10 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(Favorito::class, 'usuario_id');
     }
+
+    // Devolver siempre el id numérico
+    public function getAuthIdentifier()
+    {
+        return $this->id;
+    }
 }
