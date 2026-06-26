@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::resource('usuarios', App\Http\Controllers\Admin\UsuarioController::class)->except(['show']);
     Route::post('usuarios/{usuario}/reset-password', [App\Http\Controllers\Admin\UsuarioController::class, 'resetPassword'])->name('usuarios.reset-password');
+    Route::resource('categorias', App\Http\Controllers\Admin\CategoriaController::class)->except(['show']);
+    Route::resource('motores', App\Http\Controllers\Admin\MotorController::class)->except(['show']);
+    Route::resource('etiquetas', App\Http\Controllers\Admin\EtiquetaController::class)->except(['show']);
 });
 
 });

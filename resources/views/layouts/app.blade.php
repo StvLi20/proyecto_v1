@@ -105,18 +105,25 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->routeIs('admin.categorias.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.categorias.index') }}" class="nav-link {{ request()->routeIs('admin.categorias.*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-tags"></i>
                             <p>Categorías</p>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link {{ request()->routeIs('admin.motores.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.motores.index') }}" class="nav-link {{ request()->routeIs('admin.motores.*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-database"></i>
                             <p>Motores</p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+    <a href="{{ route('admin.etiquetas.index') }}" class="nav-link {{ request()->routeIs('admin.etiquetas.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-tag"></i>
+        <p>Etiquetas</p>
+    </a>
+</li>
                     @endif
 
                 </ul>

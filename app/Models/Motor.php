@@ -9,4 +9,9 @@ class Motor extends Model
     protected $table = 'motores';
     protected $fillable = ['nombre'];
     public $timestamps = false;
+
+    public function scripts()
+{
+    return $this->hasMany(Script::class, 'motor_id');
+}
 }
