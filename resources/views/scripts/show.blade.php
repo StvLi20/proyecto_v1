@@ -159,9 +159,7 @@
                         <i class="bi bi-arrow-left me-2"></i>Volver al catálogo
                     </a>
 
-                <a href="{{ route('scripts.index') }}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left me-2"></i>Volver al catálogo
-                </a>
+                
 
             </div>
         </div>

@@ -96,7 +96,7 @@ class AuthController extends Controller
 
         // Actualizar password y marcar primer_login como false
         $usuario = Auth::user();
-        $usuario->password     = $request->password;
+        $usuario->password = \Illuminate\Support\Facades\Hash::make($request->password);
         $usuario->primer_login = false;
         $usuario->save();
 
