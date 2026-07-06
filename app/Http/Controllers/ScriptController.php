@@ -17,12 +17,14 @@ class ScriptController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Script::with(['motor', 'categoria', 'autor']);
+        $query = Script::with(['motores', 'categoria', 'autor']);
 
         // Filtro por motor
-        if ($request->filled('motor_id')) {
-            $query->where('motor_id', $request->motor_id);
-        }
+if ($request->filled('motor_id')) {
+    $query->whereHas('motores', function ($q) use ($request) {
+        $q->where('motores.id', $request->motor_id);
+    });
+}
 
         // Filtro por categoría
         if ($request->filled('categoria_id')) {
@@ -64,40 +66,41 @@ class ScriptController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo'       => 'required|max:200',
-            'descripcion'  => 'nullable|max:500',
-            'codigo'       => 'required',
-            'motor_id'     => 'required|exists:motores,id',
-            'categoria_id' => 'required|exists:categorias_script,id',
-            'etiquetas'    => 'nullable|array',
-            'etiquetas.*'  => 'exists:etiquetas,id',
-        ], [
-            'titulo.required'       => 'El título es obligatorio.',
-            'titulo.max'            => 'El título no puede superar 200 caracteres.',
-            'codigo.required'       => 'El código SQL es obligatorio.',
-            'motor_id.required'     => 'Seleccioná un motor de base de datos.',
-            'motor_id.exists'       => 'El motor seleccionado no es válido.',
-            'categoria_id.required' => 'Seleccioná una categoría.',
-            'categoria_id.exists'   => 'La categoría seleccionada no es válida.',
-        ]);
+    'titulo'       => 'required|max:200',
+    'descripcion'  => 'nullable|max:500',
+    'codigo'       => 'required',
+    'motores'      => 'required|array|min:1',
+    'motores.*'    => 'exists:motores,id',
+    'categoria_id' => 'required|exists:categorias_script,id',
+    'etiquetas'    => 'nullable|array',
+    'etiquetas.*'  => 'exists:etiquetas,id',
+], [
+    'titulo.required'       => 'El título es obligatorio.',
+    'titulo.max'            => 'El título no puede superar 200 caracteres.',
+    'codigo.required'       => 'El código SQL es obligatorio.',
+    'motores.required'      => 'Seleccioná al menos un motor.',
+    'motores.min'           => 'Seleccioná al menos un motor.',
+    'categoria_id.required' => 'Seleccioná una categoría.',
+]);
 
-        // Crear el script
-        $script = Script::create([
-            'titulo'       => $request->titulo,
-            'descripcion'  => $request->descripcion,
-            'codigo'       => $request->codigo,
-            'motor_id'     => $request->motor_id,
-            'categoria_id' => $request->categoria_id,
-            'creado_por'   => Auth::id(),
-        ]);
+$script = Script::create([
+    'titulo'       => $request->titulo,
+    'descripcion'  => $request->descripcion,
+    'codigo'       => $request->codigo,
+    'categoria_id' => $request->categoria_id,
+    'creado_por'   => Auth::id(),
+]);
 
-        // Asignar etiquetas si hay
-        if ($request->filled('etiquetas')) {
-            $script->etiquetas()->attach($request->etiquetas);
-        }
+// Asignar motores
+$script->motores()->attach($request->motores);
 
-        return redirect()->route('scripts.index')
-            ->with('success', 'Script registrado exitosamente.');
+// Asignar etiquetas si hay
+if ($request->filled('etiquetas')) {
+    $script->etiquetas()->attach($request->etiquetas);
+}
+
+return redirect()->route('scripts.index')
+    ->with('success', 'Script registrado exitosamente.');
     }
 
     /**
@@ -105,7 +108,7 @@ class ScriptController extends Controller
      */
     public function show(Script $script)
     {
-        $script->load(['motor', 'categoria', 'autor', 'etiquetas', 'versiones.modificadoPor']);
+        $script->load(['motores', 'categoria', 'autor', 'etiquetas', 'versiones.modificadoPor']);
         return view('scripts.show', compact('script'));
     }
 
@@ -132,43 +135,37 @@ class ScriptController extends Controller
      */
     public function update(Request $request, Script $script)
     {
-        // Solo el autor o admin puede editar
-        if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'dba') {
-            return redirect()->route('scripts.index')
-                ->with('error', 'No tenés permiso para editar este script.');
-        }
-
         $request->validate([
-            'titulo'       => 'required|max:200',
-            'descripcion'  => 'nullable|max:500',
-            'codigo'       => 'required',
-            'motor_id'     => 'required|exists:motores,id',
-            'categoria_id' => 'required|exists:categorias_script,id',
-            'etiquetas'    => 'nullable|array',
-            'etiquetas.*'  => 'exists:etiquetas,id',
-        ]);
+    'titulo'       => 'required|max:200',
+    'descripcion'  => 'nullable|max:500',
+    'codigo'       => 'required',
+    'motores'      => 'required|array|min:1',
+    'motores.*'    => 'exists:motores,id',
+    'categoria_id' => 'required|exists:categorias_script,id',
+    'etiquetas'    => 'nullable|array',
+    'etiquetas.*'  => 'exists:etiquetas,id',
+]);
 
-        // Guardar versión anterior antes de actualizar
-        VersionScript::create([
-            'script_id'       => $script->id,
-            'codigo_anterior' => $script->codigo,
-            'modificado_por'  => Auth::id(),
-        ]);
+// Guardar versión anterior
+VersionScript::create([
+    'script_id'       => $script->id,
+    'codigo_anterior' => $script->codigo,
+    'modificado_por'  => Auth::id(),
+]);
 
-        // Actualizar el script
-        $script->update([
-            'titulo'       => $request->titulo,
-            'descripcion'  => $request->descripcion,
-            'codigo'       => $request->codigo,
-            'motor_id'     => $request->motor_id,
-            'categoria_id' => $request->categoria_id,
-        ]);
+$script->update([
+    'titulo'       => $request->titulo,
+    'descripcion'  => $request->descripcion,
+    'codigo'       => $request->codigo,
+    'categoria_id' => $request->categoria_id,
+]);
 
-        // Sincronizar etiquetas
-        $script->etiquetas()->sync($request->etiquetas ?? []);
+// Sincronizar motores y etiquetas
+$script->motores()->sync($request->motores);
+$script->etiquetas()->sync($request->etiquetas ?? []);
+return redirect()->route('scripts.show', $script)
+    ->with('success', 'Script actualizado. Versión anterior guardada.');
 
-        return redirect()->route('scripts.show', $script)
-            ->with('success', 'Script actualizado. Versión anterior guardada.');
     }
 
     /**

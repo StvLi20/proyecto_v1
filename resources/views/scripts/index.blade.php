@@ -93,10 +93,12 @@
                             @endif
                         </td>
                         <td>
-                            <span class="badge bg-primary bg-opacity-10 text-primary">
-                                {{ $script->motor->nombre }}
-                            </span>
-                        </td>
+    @foreach($script->motores as $motor)
+        <span class="badge bg-primary bg-opacity-10 text-primary me-1">
+            {{ $motor->nombre }}
+        </span>
+    @endforeach
+</td>
                         <td>{{ $script->categoria->nombre }}</td>
                         <td>{{ $script->autor->nombre }}</td>
                         <td class="text-muted small">{{ $script->created_at->format('d/m/Y') }}</td>

@@ -83,13 +83,15 @@
                 @endif
 
                 <div class="mb-2">
-                    <span class="text-muted small">Motor</span>
-                    <div>
-                        <span class="badge bg-primary bg-opacity-10 text-primary">
-                            {{ $script->motor->nombre }}
-                        </span>
-                    </div>
-                </div>
+    <span class="text-muted small">Motores</span>
+    <div class="d-flex flex-wrap gap-1 mt-1">
+        @foreach($script->motores as $motor)
+            <span class="badge bg-primary bg-opacity-10 text-primary">
+                {{ $motor->nombre }}
+            </span>
+        @endforeach
+    </div>
+</div>
 
                 <div class="mb-2">
                     <span class="text-muted small">Categoría</span>

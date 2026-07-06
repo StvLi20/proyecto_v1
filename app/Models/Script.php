@@ -14,7 +14,6 @@ class Script extends Model
         'titulo',
         'descripcion',
         'codigo',
-        'motor_id',
         'categoria_id',
         'creado_por'
     ];
@@ -24,10 +23,16 @@ class Script extends Model
     ];
 
     // Motor al que pertenece
-    public function motor()
-    {
-        return $this->belongsTo(Motor::class, 'motor_id');
-    }
+    // Ahora — muchos a muchos
+public function motores()
+{
+    return $this->belongsToMany(
+        Motor::class,
+        'script_motor',
+        'script_id',
+        'motor_id'
+    );
+}
 
     // Categoría a la que pertenece
     public function categoria()

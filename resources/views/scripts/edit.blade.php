@@ -28,20 +28,24 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Motor <span class="text-danger">*</span></label>
-                    <select class="form-select @error('motor_id') is-invalid @enderror" name="motor_id" required>
-                        <option value="">Seleccioná un motor</option>
-                        @foreach($motores as $motor)
-                            <option value="{{ $motor->id }}"
-                                {{ old('motor_id', $script->motor_id) == $motor->id ? 'selected' : '' }}>
-                                {{ $motor->nombre }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('motor_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    <label class="form-label fw-semibold">Motores <span class="text-danger">*</span></label>
+    <div class="d-flex flex-wrap gap-2 p-2 border rounded @error('motores') border-danger @enderror">
+        @foreach($motores as $motor)
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox"
+                name="motores[]" value="{{ $motor->id }}"
+                id="motor_{{ $motor->id }}"
+                {{ in_array($motor->id, old('motores', $script->motores->pluck('id')->toArray())) ? 'checked' : '' }}>
+            <label class="form-check-label" for="motor_{{ $motor->id }}">
+                {{ $motor->nombre }}
+            </label>
+        </div>
+        @endforeach
+    </div>
+    @error('motores')
+        <div class="text-danger small mt-1">{{ $message }}</div>
+    @enderror
+</div>
 
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Categoría <span class="text-danger">*</span></label>
