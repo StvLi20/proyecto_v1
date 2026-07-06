@@ -56,16 +56,18 @@
 {{-- Tabla de scripts --}}
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
-        <h6 class="fw-bold mb-0">
-            <i class="bi bi-code-square me-2 text-muted"></i>
-            Scripts <span class="badge bg-secondary ms-1">{{ $scripts->total() }}</span>
-        </h6>
+    <h6 class="fw-bold mb-0">
+        <i class="bi bi-code-square me-2 text-muted"></i>
+        Scripts <span class="badge bg-secondary ms-1">{{ $scripts->total() }}</span>
+    </h6>
+    <div class="ms-auto">
         @if(Auth::user()->rol !== 'consulta')
         <a href="{{ route('scripts.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-lg me-1"></i> Nuevo Script
         </a>
         @endif
     </div>
+</div>
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">

@@ -130,4 +130,25 @@ class UsuarioController extends Controller
         return redirect()->route('admin.usuarios.index')
             ->with('success', 'Usuario eliminado exitosamente.');
     }
+
+    /**
+ * Lista los usuarios eliminados
+ */
+public function eliminados()
+{
+    $usuarios = Usuario::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+    return view('admin.usuarios.eliminados', compact('usuarios'));
+}
+
+/**
+ * Restaura un usuario eliminado
+ */
+public function restaurar($id)
+{
+    $usuario = Usuario::onlyTrashed()->findOrFail($id);
+    $usuario->restore();
+
+    return redirect()->route('admin.usuarios.eliminados')
+        ->with('success', 'Usuario restaurado exitosamente.');
+}
 }

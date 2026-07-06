@@ -6,15 +6,17 @@
 @section('content')
 
 <div class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
-        <h6 class="fw-bold mb-0">
-            <i class="bi bi-tag me-2 text-muted"></i>
-            Etiquetas <span class="badge bg-secondary ms-1">{{ $etiquetas->count() }}</span>
-        </h6>
+    <<div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
+    <h6 class="fw-bold mb-0">
+        <i class="bi bi-tag me-2 text-muted"></i>
+        Etiquetas <span class="badge bg-secondary ms-1">{{ $etiquetas->count() }}</span>
+    </h6>
+    <div class="ms-auto">
         <a href="{{ route('admin.etiquetas.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-lg me-1"></i> Nueva Etiqueta
         </a>
     </div>
+</div>
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">

@@ -7,13 +7,19 @@
 
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
-        <h6 class="fw-bold mb-0">
-            <i class="bi bi-people me-2 text-muted"></i>
-            Usuarios <span class="badge bg-secondary ms-1">{{ $usuarios->count() }}</span>
-        </h6>
+    <h6 class="fw-bold mb-0">
+        <i class="bi bi-people me-2 text-muted"></i>
+        Usuarios <span class="badge bg-secondary ms-1">{{ $usuarios->count() }}</span>
+    </h6>
+    <div class="d-flex gap-2 ms-auto">
+        <a href="{{ route('admin.usuarios.eliminados') }}" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-person-slash me-1"></i> Eliminados
+        </a>
         <a href="{{ route('admin.usuarios.create') }}" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-lg me-1"></i> Nuevo Usuario
         </a>
+    </div>
+</div>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
