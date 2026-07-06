@@ -115,7 +115,7 @@ class ScriptController extends Controller
     public function edit(Script $script)
     {
         // Solo el autor o admin puede editar
-        if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin') {
+         if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'dba') {
             return redirect()->route('scripts.index')
                 ->with('error', 'No tenés permiso para editar este script.');
         }
@@ -133,7 +133,7 @@ class ScriptController extends Controller
     public function update(Request $request, Script $script)
     {
         // Solo el autor o admin puede editar
-        if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin') {
+        if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'dba') {
             return redirect()->route('scripts.index')
                 ->with('error', 'No tenés permiso para editar este script.');
         }
@@ -177,7 +177,7 @@ class ScriptController extends Controller
     public function destroy(Script $script)
     {
         // Solo el autor o admin puede eliminar
-        if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin') {
+         if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'dba') {
             return redirect()->route('scripts.index')
                 ->with('error', 'No tenés permiso para eliminar este script.');
         }
