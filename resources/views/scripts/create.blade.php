@@ -28,17 +28,14 @@
 
                 <div class="col-md-4">
     <label class="form-label fw-semibold">Motores <span class="text-danger">*</span></label>
-    <div class="d-flex flex-wrap gap-2 p-2 border rounded @error('motores') border-danger @enderror">
+    <div class="d-flex flex-wrap gap-2 @error('motores') is-invalid @enderror">
         @foreach($motores as $motor)
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox"
-                name="motores[]" value="{{ $motor->id }}"
-                id="motor_{{ $motor->id }}"
-                {{ in_array($motor->id, old('motores', [])) ? 'checked' : '' }}>
-            <label class="form-check-label" for="motor_{{ $motor->id }}">
-                {{ $motor->nombre }}
-            </label>
-        </div>
+        <input type="checkbox" class="btn-check" name="motores[]"
+            value="{{ $motor->id }}" id="motor_{{ $motor->id }}"
+            {{ in_array($motor->id, old('motores', [])) ? 'checked' : '' }}>
+        <label class="btn btn-outline-primary btn-sm" for="motor_{{ $motor->id }}">
+            {{ $motor->nombre }}
+        </label>
         @endforeach
     </div>
     @error('motores')
@@ -62,21 +59,18 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Etiquetas</label>
-                    <div class="d-flex flex-wrap gap-2 p-2 border rounded">
-                        @foreach($etiquetas as $etiqueta)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox"
-                                name="etiquetas[]" value="{{ $etiqueta->id }}"
-                                id="etiqueta_{{ $etiqueta->id }}"
-                                {{ in_array($etiqueta->id, old('etiquetas', [])) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="etiqueta_{{ $etiqueta->id }}">
-                                {{ $etiqueta->nombre }}
-                            </label>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
+    <label class="form-label fw-semibold">Etiquetas</label>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach($etiquetas as $etiqueta)
+        <input type="checkbox" class="btn-check" name="etiquetas[]"
+            value="{{ $etiqueta->id }}" id="etiqueta_{{ $etiqueta->id }}"
+            {{ in_array($etiqueta->id, old('etiquetas', [])) ? 'checked' : '' }}>
+        <label class="btn btn-outline-secondary btn-sm" for="etiqueta_{{ $etiqueta->id }}">
+            {{ $etiqueta->nombre }}
+        </label>
+        @endforeach
+    </div>
+</div>
 
                 <div class="col-12">
                     <label class="form-label fw-semibold">Descripción</label>

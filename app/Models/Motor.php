@@ -16,8 +16,13 @@ class Motor extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function scripts()
+ public function scripts()
 {
-    return $this->hasMany(Script::class, 'motor_id');
+    return $this->belongsToMany(
+        Script::class,
+        'script_motor',
+        'motor_id',
+        'script_id'
+    );
 }
 }

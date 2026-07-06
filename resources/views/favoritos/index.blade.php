@@ -36,9 +36,11 @@
                             @endif
                         </td>
                         <td>
-                            <span class="badge bg-primary bg-opacity-10 text-primary">
-                                {{ $favorito->script->motor->nombre }}
-                            </span>
+                           @foreach($favorito->script->motores as $motor)
+                                <span class="badge bg-primary bg-opacity-10 text-primary me-1">
+                                    {{ $motor->nombre }}
+                                </span>
+                            @endforeach
                         </td>
                         <td>{{ $favorito->script->categoria->nombre }}</td>
                         <td>{{ $favorito->script->autor->nombre }}</td>

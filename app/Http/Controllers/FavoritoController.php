@@ -14,7 +14,7 @@ class FavoritoController extends Controller
      */
     public function index()
     {
-        $favoritos = Favorito::with(['script.motor', 'script.categoria', 'script.autor'])
+        $favoritos = Favorito::with(['script.motores', 'script.categoria', 'script.autor'])
             ->where('usuario_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();

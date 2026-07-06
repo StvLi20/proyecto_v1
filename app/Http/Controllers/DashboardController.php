@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $totalFavoritos = Favorito::where('usuario_id', Auth::id())->count();
 
         // Últimos 5 scripts agregados
-        $ultimosScripts = Script::with(['motor', 'categoria', 'autor'])
+        $ultimosScripts = Script::with(['motores', 'categoria', 'autor'])
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
