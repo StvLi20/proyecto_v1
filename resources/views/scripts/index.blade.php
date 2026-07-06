@@ -102,7 +102,7 @@
                             <a href="{{ route('scripts.show', $script) }}" class="btn btn-sm btn-outline-secondary" title="Ver">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            @if(Auth::id() === $script->creado_por || Auth::user()->rol === 'admin')
+                            @if(Auth::id() === $script->creado_por || Auth::user()->rol === 'admin' || Auth::user()->rol === 'dba')
                             <a href="{{ route('scripts.edit', $script) }}" class="btn btn-sm btn-outline-primary" title="Editar">
                                 <i class="bi bi-pencil"></i>
                             </a>

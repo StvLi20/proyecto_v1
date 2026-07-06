@@ -126,7 +126,7 @@
         <div class="card border-0 shadow-sm">
             <div class="card-body d-flex flex-column gap-2">
 
-                @if(Auth::id() === $script->creado_por || Auth::user()->rol === 'admin')
+                @if(Auth::id() === $script->creado_por || Auth::user()->rol === 'admin' || Auth::user()->rol === 'dba')
                 <a href="{{ route('scripts.edit', $script) }}" class="btn btn-primary btn-sm">
                     <i class="bi bi-pencil me-2"></i>Editar Script
                 </a>

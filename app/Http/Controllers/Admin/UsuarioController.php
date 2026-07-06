@@ -31,36 +31,37 @@ class UsuarioController extends Controller
      * Guarda un nuevo usuario
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|max:100',
-            'correo' => 'required|email|unique:usuarios,correo',
-            'rol'    => 'required|in:admin,dba,consulta',
-        ], [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.max'      => 'El nombre no puede superar 100 caracteres.',
-            'correo.required' => 'El correo es obligatorio.',
-            'correo.email'    => 'Ingresá un correo válido.',
-            'correo.unique'   => 'Este correo ya está registrado.',
-            'rol.required'    => 'Seleccioná un rol.',
-            'rol.in'          => 'El rol seleccionado no es válido.',
-        ]);
+{
+    $request->validate([
+        'nombre' => 'required|max:100',
+        'correo' => 'required|email|unique:usuarios,correo|regex:/@bancatlan\.hn$/',
+        'rol'    => 'required|in:admin,dba,consulta',
+    ], [
+        'nombre.required' => 'El nombre es obligatorio.',
+        'nombre.max'      => 'El nombre no puede superar 100 caracteres.',
+        'correo.required' => 'El correo es obligatorio.',
+        'correo.email'    => 'Ingresá un correo válido.',
+        'correo.unique'   => 'Este correo ya está registrado.',
+        'correo.regex'    => 'El correo debe estar en dominio @bancatlan.hn.',
+        'rol.required'    => 'Seleccioná un rol.',
+        'rol.in'          => 'El rol seleccionado no es válido.',
+    ]);
 
-        // Generar contraseña temporal aleatoria
-        $passwordTemporal = Str::random(10) . 'A1';
+    // Generar contraseña temporal aleatoria
+    $passwordTemporal = Str::random(10) . 'A1';
 
-        Usuario::create([
-            'nombre'      => $request->nombre,
-            'correo'      => $request->correo,
-            'password'    => Hash::make($passwordTemporal),
-            'rol'         => $request->rol,
-            'primer_login' => true,
-            'creado_por'  => auth()->id(),
-        ]);
+    Usuario::create([
+        'nombre'      => $request->nombre,
+        'correo'      => $request->correo,
+        'password'    => Hash::make($passwordTemporal),
+        'rol'         => $request->rol,
+        'primer_login' => true,
+        'creado_por'  => auth()->id(),
+    ]);
 
-        return redirect()->route('admin.usuarios.index')
-            ->with('success', "Usuario creado. Contraseña temporal: $passwordTemporal");
-    }
+    return redirect()->route('admin.usuarios.index')
+        ->with('success', "Usuario creado. Contraseña temporal: $passwordTemporal");
+}
 
     /**
      * Muestra el formulario para editar un usuario
@@ -77,13 +78,14 @@ class UsuarioController extends Controller
     {
         $request->validate([
             'nombre' => 'required|max:100',
-            'correo' => 'required|email|unique:usuarios,correo,' . $usuario->id,
+            'correo' => 'required|email|unique:usuarios,correo,' . $usuario->id . '|regex:/@bancatlan\.hn$/',
             'rol'    => 'required|in:admin,dba,consulta',
         ], [
             'nombre.required' => 'El nombre es obligatorio.',
             'correo.required' => 'El correo es obligatorio.',
             'correo.email'    => 'Ingresá un correo válido.',
             'correo.unique'   => 'Este correo ya está registrado.',
+            'correo.regex'    => 'El correo debe estar en dominio @bancatlan.hn.',
             'rol.required'    => 'Seleccioná un rol.',
         ]);
 
