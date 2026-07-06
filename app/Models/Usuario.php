@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Usuario extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $table = 'usuarios';
     const UPDATED_AT = null;
@@ -28,8 +29,9 @@ class Usuario extends Authenticatable
     ];
 
     protected $casts = [
-        'primer_login' => 'boolean',
         
+        'primer_login' => 'boolean',
+        'deleted_at'   => 'datetime',
     ];
 
 

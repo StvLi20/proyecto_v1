@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Script extends Model
 {
+    use SoftDeletes;
     protected $table = 'scripts';
     const UPDATED_AT = null;
     protected $fillable = [
@@ -15,6 +17,10 @@ class Script extends Model
         'motor_id',
         'categoria_id',
         'creado_por'
+    ];
+
+    protected $casts = [
+        'deleted_at' => 'datetime',
     ];
 
     // Motor al que pertenece

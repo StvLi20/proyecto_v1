@@ -175,17 +175,19 @@ class ScriptController extends Controller
      * Elimina un script
      */
     public function destroy(Script $script)
-    {
-        // Solo el autor o admin puede eliminar
-         if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'dba') {
-            return redirect()->route('scripts.index')
-                ->with('error', 'No tenés permiso para eliminar este script.');
-        }
-
-        $script->etiquetas()->detach();
-        $script->delete();
-
+{
+    // Solo el autor, DBA o admin puede eliminar
+    if (Auth::id() !== $script->creado_por && Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'dba') {
         return redirect()->route('scripts.index')
-            ->with('success', 'Script eliminado exitosamente.');
+            ->with('error', 'No tenés permiso para eliminar este script.');
     }
+
+    // Eliminar favoritos asociados antes del soft delete
+    \App\Models\Favorito::where('script_id', $script->id)->delete();
+
+    $script->delete();
+
+    return redirect()->route('scripts.index')
+        ->with('success', 'Script eliminado exitosamente.');
+}
 }

@@ -37,7 +37,7 @@ class AuthController extends Controller
     ]);
 
     // Buscar usuario por correo manualmente
-    $usuario = \App\Models\Usuario::where('correo', $request->correo)->first();
+    $usuario = \App\Models\Usuario::whereNull('deleted_at')->where('correo', $request->correo)->first();
 
     if ($usuario && \Illuminate\Support\Facades\Hash::check($request->password, $usuario->password)) {
         Auth::login($usuario);
