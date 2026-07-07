@@ -53,6 +53,22 @@
     </div>
 </div>
 
+{{-- Filtro rápido por tipo --}}
+<div class="mb-3 d-flex gap-2">
+    <a href="{{ route('scripts.index', array_merge(request()->query(), ['tipo' => ''])) }}"
+        class="btn btn-sm {{ !request('tipo') ? 'btn-dark' : 'btn-outline-dark' }}">
+        <i class="bi bi-grid me-1"></i> Todos
+    </a>
+    <a href="{{ route('scripts.index', array_merge(request()->query(), ['tipo' => 'sql'])) }}"
+        class="btn btn-sm {{ request('tipo') === 'sql' ? 'btn-primary' : 'btn-outline-primary' }}">
+        <i class="bi bi-database me-1"></i> SQL
+    </a>
+    <a href="{{ route('scripts.index', array_merge(request()->query(), ['tipo' => 'bash'])) }}"
+        class="btn btn-sm {{ request('tipo') === 'bash' ? 'btn-warning text-dark' : 'btn-outline-warning' }}">
+        <i class="bi bi-terminal me-1"></i> Bash
+    </a>
+</div>
+
 {{-- Tabla de scripts --}}
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">

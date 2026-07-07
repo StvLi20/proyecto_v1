@@ -41,6 +41,11 @@ if ($request->filled('motor_id')) {
             });
         }
 
+        // Filtro por tipo
+        if ($request->filled('tipo')) {
+            $query->where('tipo', $request->tipo);
+        }
+
         $scripts    = $query->orderBy('created_at', 'desc')->paginate(10);
         $motores    = Motor::all();
         $categorias = CategoriasScript::all();
