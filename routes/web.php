@@ -31,7 +31,7 @@ Route::post('/cambiar-password', [AuthController::class, 'cambiarPassword'])->na
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'primer_login'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');

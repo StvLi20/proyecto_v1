@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->alias([
             'rol' => \App\Http\Middleware\VerificarRol::class,
+            'primer_login' => \App\Http\Middleware\VerificarPrimerLogin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
