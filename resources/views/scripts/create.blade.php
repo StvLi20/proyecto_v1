@@ -12,7 +12,7 @@
         </h6>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ route('scripts.store') }}">
+        <form method="POST" action="{{ route('scripts.store') }}" id="formScript">
             @csrf
 
             <div class="row g-3">
@@ -100,21 +100,20 @@
         </li>
     </ul>
 
-    <textarea class="form-control font-monospace @error('codigo') is-invalid @enderror"
-        name="codigo" id="codigoEditor" rows="12"
-        placeholder="-- Pegá tu script SQL aquí"
-        style="font-size: 0.875rem; background:#1e1e1e; color:#d4d4d4; border-color:#333; border-top-left-radius:0;">{{ old('codigo') }}</textarea>
-    @error('codigo')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
+    {{-- Monaco Editor --}}
+<div id="monacoEditor" style="height:350px; border:1px solid #333; border-top:none; border-radius:0 0 6px 6px;"></div>
+<textarea name="codigo" id="codigoHidden" style="display:none;">{{ old('codigo') }}</textarea>
+@error('codigo')
+    <div class="text-danger small mt-1">{{ $message }}</div>
+@enderror
 </div>
 
             </div>
 
             <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-save me-2"></i>Guardar Script
-                </button>
+                <button type="submit" class="btn btn-primary" id="btnGuardar">
+    <i class="bi bi-save me-2"></i>Guardar Script
+</button>
                 <a href="{{ route('scripts.index') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-x me-2"></i>Cancelar
                 </a>
@@ -127,26 +126,52 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
 <script>
+    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' } });
+
+    let editor = null;
+
+    require(['vs/editor/editor.main'], function() {
+        editor = monaco.editor.create(document.getElementById('monacoEditor'), {
+            value: document.getElementById('codigoHidden').value || '',
+            language: 'sql',
+            theme: 'vs-dark',
+            fontSize: 14,
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            lineNumbers: 'on',
+            roundedSelection: true,
+            wordWrap: 'on',
+        });
+    });
+
+   document.getElementById('btnGuardar').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (editor) {
+        document.getElementById('codigoHidden').value = editor.getValue();
+    }
+    document.getElementById('formScript').requestSubmit();
+});
+
     function cambiarTipo(tipo) {
         document.getElementById('tipo').value = tipo;
 
         const tabSql  = document.getElementById('tab-sql');
         const tabBash = document.getElementById('tab-bash');
-        const editor  = document.getElementById('codigoEditor');
 
         if (tipo === 'sql') {
             tabSql.classList.add('active');
             tabBash.classList.remove('active');
-            editor.placeholder = '-- Pegá tu script SQL aquí';
+            if (editor) monaco.editor.setModelLanguage(editor.getModel(), 'sql');
         } else {
             tabBash.classList.add('active');
             tabSql.classList.remove('active');
-            editor.placeholder = '#!/bin/bash\n# Pegá tu script Bash aquí';
+            if (editor) monaco.editor.setModelLanguage(editor.getModel(), 'shell');
         }
     }
 
-    // Inicializar con el valor anterior si hubo error de validación
     const tipoActual = document.getElementById('tipo').value;
     if (tipoActual === 'bash') cambiarTipo('bash');
 </script>

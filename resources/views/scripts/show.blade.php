@@ -29,9 +29,8 @@
                 </button>
             </div>
             <div class="card-body p-0">
-                <pre class="m-0 p-3 rounded-bottom"
-                    style="background:#1e1e1e; color:#d4d4d4; font-size:0.875rem; overflow-x:auto; max-height:450px;"><code id="codigoSQL">{{ $script->codigo }}</code></pre>
-            </div>
+    <div id="monacoViewer" style="height:400px; border-radius:0 0 8px 8px;"></div>
+</div>
         </div>
 
         {{-- Historial de versiones --}}
@@ -189,9 +188,30 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
 <script>
+    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' } });
+
+    require(['vs/editor/editor.main'], function() {
+        const codigo   = @json($script->codigo);
+        const lenguaje = '{{ $script->tipo }}' === 'bash' ? 'shell' : 'sql';
+
+        monaco.editor.create(document.getElementById('monacoViewer'), {
+            value: codigo,
+            language: lenguaje,
+            theme: 'vs-dark',
+            fontSize: 14,
+            readOnly: true,
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            lineNumbers: 'on',
+            wordWrap: 'on',
+        });
+    });
+
     function copiarCodigo() {
-        const codigo = document.getElementById('codigoSQL').innerText;
+        const codigo = @json($script->codigo);
         navigator.clipboard.writeText(codigo).then(() => {
             const btn = document.getElementById('btnCopiar');
             btn.innerHTML = '<i class="bi bi-check me-1"></i> Copiado';
