@@ -10,7 +10,7 @@ class MotorController extends Controller
 {
     public function index()
     {
-        $motores = Motor::orderBy('nombre')->get();
+        $motores = Motor::orderBy('nombre')->paginate(10);
         return view('admin.motores.index', compact('motores'));
     }
 

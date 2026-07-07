@@ -64,6 +64,11 @@
             </table>
         </div>
     </div>
+    @if($motores->hasPages())
+<div class="card-footer bg-white border-0">
+    {{ $motores->links() }}
+</div>
+@endif
 </div>
 
 @endsection

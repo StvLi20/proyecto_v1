@@ -112,6 +112,11 @@
             </table>
         </div>
     </div>
+    @if($usuarios->hasPages())
+<div class="card-footer bg-white border-0">
+    {{ $usuarios->links() }}
+</div>
+@endif
 </div>
 
 @endsection

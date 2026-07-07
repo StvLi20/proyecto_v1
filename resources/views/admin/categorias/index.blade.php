@@ -66,6 +66,11 @@
             </table>
         </div>
     </div>
+    @if($categorias->hasPages())
+<div class="card-footer bg-white border-0">
+    {{ $categorias->links() }}
+</div>
+@endif
 </div>
 
 @endsection

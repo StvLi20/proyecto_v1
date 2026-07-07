@@ -10,7 +10,7 @@ class CategoriaController extends Controller
 {
     public function index()
     {
-        $categorias = CategoriasScript::orderBy('nombre')->get();
+        $categorias = CategoriasScript::orderBy('nombre')->paginate(10);
         return view('admin.categorias.index', compact('categorias'));
     }
 

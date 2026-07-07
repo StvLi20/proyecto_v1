@@ -10,7 +10,7 @@ class EtiquetaController extends Controller
 {
     public function index()
     {
-        $etiquetas = Etiqueta::orderBy('nombre')->get();
+        $etiquetas = Etiqueta::orderBy('nombre')->paginate(10);
         return view('admin.etiquetas.index', compact('etiquetas'));
     }
 

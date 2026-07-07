@@ -68,6 +68,11 @@
             </table>
         </div>
     </div>
+    @if($etiquetas->hasPages())
+<div class="card-footer bg-white border-0">
+    {{ $etiquetas->links() }}
+</div>
+@endif
 </div>
 
 @endsection
