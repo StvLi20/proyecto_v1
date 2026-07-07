@@ -5,7 +5,10 @@
 
 @section('content')
 
-{{-- Tarjetas de estadísticas --}}
+{{-- Bienvenida --}}
+<p class="text-muted mb-4">Bienvenido, <strong>{{ Auth::user()->nombre }}</strong></p>
+
+{{-- Tarjetas --}}
 <div class="row g-3 mb-4">
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
@@ -64,44 +67,36 @@
 {{-- Gráficas --}}
 <div class="row g-4 mb-4">
 
-    {{-- Scripts por motor --}}
-    <div class="col-md-5">
+    {{-- Barras - Scripts por motor --}}
+    <div class="col-md-7">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 pt-3">
+            <div class="card-header bg-white border-0 pt-3 pb-0">
                 <h6 class="fw-bold mb-0">
                     <i class="bi bi-bar-chart me-2 text-muted"></i>Scripts por Motor
                 </h6>
             </div>
             <div class="card-body">
-                <canvas id="chartMotores" height="200"></canvas>
+                <canvas id="chartMotores" height="120"></canvas>
             </div>
         </div>
     </div>
 
-    {{-- Scripts por categoría --}}
-    <div class="col-md-4">
+    {{-- Dona - Scripts por categoría --}}
+    <div class="col-md-5">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 pt-3">
+            <div class="card-header bg-white border-0 pt-3 pb-0">
                 <h6 class="fw-bold mb-0">
                     <i class="bi bi-pie-chart me-2 text-muted"></i>Scripts por Categoría
                 </h6>
             </div>
-            <div class="card-body">
-                <canvas id="chartCategorias" height="200"></canvas>
-            </div>
-        </div>
-    </div>
-
-    {{-- Scripts por tipo --}}
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 pt-3">
-                <h6 class="fw-bold mb-0">
-                    <i class="bi bi-pie-chart me-2 text-muted"></i>SQL vs Bash
-                </h6>
-            </div>
             <div class="card-body d-flex align-items-center justify-content-center">
-                <canvas id="chartTipo" height="200"></canvas>
+                <div style="position:relative; width:100%; max-width:260px;">
+                    <canvas id="chartCategorias"></canvas>
+                    <div style="position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+                        <div class="fw-bold fs-3">{{ $totalScripts }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">Scripts</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -120,42 +115,38 @@
                 </h6>
             </div>
             <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Título</th>
-                                <th>Motor</th>
-                                <th>Fecha</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($ultimosScripts as $script)
-                            <tr>
-                                <td>
-                                    <a href="{{ route('scripts.show', $script) }}" class="text-decoration-none fw-semibold">
-                                        {{ Str::limit($script->titulo, 40) }}
-                                    </a>
-                                </td>
-                                <td>
-                                    @foreach($script->motores as $motor)
-                                        <span class="badge bg-primary bg-opacity-10 text-primary me-1">
-                                            {{ $motor->nombre }}
-                                        </span>
-                                    @endforeach
-                                </td>
-                                <td class="text-muted small">{{ $script->created_at->format('d/m/Y') }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-muted py-3">
-                                    No hay scripts registrados
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Título</th>
+                            <th>Motor</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($ultimosScripts as $script)
+                        <tr>
+                            <td>
+                                <a href="{{ route('scripts.show', $script) }}" class="text-decoration-none fw-semibold small">
+                                    {{ Str::limit($script->titulo, 35) }}
+                                </a>
+                            </td>
+                            <td>
+                                @foreach($script->motores as $motor)
+                                    <span class="badge bg-primary bg-opacity-10 text-primary me-1">
+                                        {{ $motor->nombre }}
+                                    </span>
+                                @endforeach
+                            </td>
+                            <td class="text-muted small">{{ $script->created_at->format('d/m/Y') }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-3">No hay scripts</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -169,40 +160,36 @@
                 </h6>
             </div>
             <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Título</th>
-                                <th>Categoría</th>
-                                <th class="text-center">Favoritos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($topFavoritos as $script)
-                            <tr>
-                                <td>
-                                    <a href="{{ route('scripts.show', $script) }}" class="text-decoration-none fw-semibold">
-                                        {{ Str::limit($script->titulo, 40) }}
-                                    </a>
-                                </td>
-                                <td class="text-muted small">{{ $script->categoria->nombre }}</td>
-                                <td class="text-center">
-                                    <span class="badge bg-warning bg-opacity-10 text-warning">
-                                        <i class="bi bi-star-fill me-1"></i>{{ $script->favoritos_count }}
-                                    </span>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-muted py-3">
-                                    No hay favoritos registrados
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Título</th>
+                            <th>Categoría</th>
+                            <th class="text-center">⭐</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($topFavoritos as $script)
+                        <tr>
+                            <td>
+                                <a href="{{ route('scripts.show', $script) }}" class="text-decoration-none fw-semibold small">
+                                    {{ Str::limit($script->titulo, 35) }}
+                                </a>
+                            </td>
+                            <td class="text-muted small">{{ $script->categoria->nombre }}</td>
+                            <td class="text-center">
+                                <span class="badge bg-warning bg-opacity-10 text-warning">
+                                    {{ $script->favoritos_count }}
+                                </span>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-3">No hay favoritos</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -214,22 +201,20 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Datos desde Laravel
     const dataMotores    = @json($scriptsPorMotor);
     const dataCategorias = @json($scriptsPorCategoria);
-    const dataTipo       = @json($scriptsPorTipo);
 
-    // Colores
     const colores = [
-        'rgba(99,102,241,0.8)',
-        'rgba(16,185,129,0.8)',
-        'rgba(245,158,11,0.8)',
-        'rgba(59,130,246,0.8)',
-        'rgba(239,68,68,0.8)',
-        'rgba(168,85,247,0.8)',
+        'rgba(99,102,241,0.85)',
+        'rgba(16,185,129,0.85)',
+        'rgba(245,158,11,0.85)',
+        'rgba(59,130,246,0.85)',
+        'rgba(239,68,68,0.85)',
+        'rgba(168,85,247,0.85)',
+        'rgba(20,184,166,0.85)',
     ];
 
-    // Gráfica de barras - Motores
+    // Barras - Motores
     new Chart(document.getElementById('chartMotores'), {
         type: 'bar',
         data: {
@@ -238,17 +223,25 @@
                 label: 'Scripts',
                 data: dataMotores.map(m => m.total),
                 backgroundColor: colores,
-                borderRadius: 6,
+                borderRadius: 8,
+                borderSkipped: false,
             }]
         },
         options: {
             responsive: true,
             plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                x: { grid: { display: false } }
+            }
         }
     });
 
-    // Gráfica de dona - Categorías
+    // Dona - Categorías
     new Chart(document.getElementById('chartCategorias'), {
         type: 'doughnut',
         data: {
@@ -256,27 +249,19 @@
             datasets: [{
                 data: dataCategorias.map(c => c.total),
                 backgroundColor: colores,
+                borderWidth: 2,
+                borderColor: '#fff',
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
-        }
-    });
-
-    // Gráfica de dona - Tipo SQL vs Bash
-    new Chart(document.getElementById('chartTipo'), {
-        type: 'doughnut',
-        data: {
-            labels: dataTipo.map(t => t.tipo),
-            datasets: [{
-                data: dataTipo.map(t => t.total),
-                backgroundColor: ['rgba(99,102,241,0.8)', 'rgba(245,158,11,0.8)'],
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+            cutout: '72%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 10 }, padding: 8, boxWidth: 10 }
+                }
+            }
         }
     });
 </script>
