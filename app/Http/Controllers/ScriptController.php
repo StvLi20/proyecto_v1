@@ -69,6 +69,7 @@ if ($request->filled('motor_id')) {
     'titulo'       => 'required|max:200',
     'descripcion'  => 'nullable|max:500',
     'codigo'       => 'required',
+    'tipo' => 'required|in:sql,bash',
     'motores'      => 'required|array|min:1',
     'motores.*'    => 'exists:motores,id',
     'categoria_id' => 'required|exists:categorias_script,id',
@@ -78,6 +79,8 @@ if ($request->filled('motor_id')) {
     'titulo.required'       => 'El título es obligatorio.',
     'titulo.max'            => 'El título no puede superar 200 caracteres.',
     'codigo.required'       => 'El código SQL es obligatorio.',
+    'tipo.required' => 'Seleccioná el tipo de script.',
+    'tipo.in'       => 'El tipo debe ser SQL o Bash.',
     'motores.required'      => 'Seleccioná al menos un motor.',
     'motores.min'           => 'Seleccioná al menos un motor.',
     'categoria_id.required' => 'Seleccioná una categoría.',
@@ -87,6 +90,7 @@ $script = Script::create([
     'titulo'       => $request->titulo,
     'descripcion'  => $request->descripcion,
     'codigo'       => $request->codigo,
+    'tipo'         => $request->tipo,
     'categoria_id' => $request->categoria_id,
     'creado_por'   => Auth::id(),
 ]);
@@ -139,6 +143,7 @@ return redirect()->route('scripts.index')
     'titulo'       => 'required|max:200',
     'descripcion'  => 'nullable|max:500',
     'codigo'       => 'required',
+    'tipo' => 'required|in:sql,bash',
     'motores'      => 'required|array|min:1',
     'motores.*'    => 'exists:motores,id',
     'categoria_id' => 'required|exists:categorias_script,id',
@@ -157,6 +162,7 @@ $script->update([
     'titulo'       => $request->titulo,
     'descripcion'  => $request->descripcion,
     'codigo'       => $request->codigo,
+    'tipo'         => $request->tipo,
     'categoria_id' => $request->categoria_id,
 ]);
 

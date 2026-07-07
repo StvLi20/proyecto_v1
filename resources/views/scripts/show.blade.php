@@ -14,8 +14,16 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
                 <h6 class="fw-bold mb-0">
-                    <i class="bi bi-code-square me-2 text-muted"></i>{{ $script->titulo }}
-                </h6>
+    @if($script->tipo === 'bash')
+        <i class="bi bi-terminal me-2 text-muted"></i>
+    @else
+        <i class="bi bi-database me-2 text-muted"></i>
+    @endif
+    {{ $script->titulo }}
+    <span class="badge ms-2 {{ $script->tipo === 'bash' ? 'bg-warning text-dark' : 'bg-primary' }}">
+        {{ strtoupper($script->tipo) }}
+    </span>
+</h6>
                 <button class="btn btn-sm btn-outline-secondary" id="btnCopiar" onclick="copiarCodigo()">
                     <i class="bi bi-clipboard me-1"></i> Copiar
                 </button>
@@ -120,6 +128,15 @@
                     </div>
                 </div>
                 @endif
+
+                <div class="mb-2 mt-2">
+    <span class="text-muted small">Tipo</span>
+    <div>
+        <span class="badge {{ $script->tipo === 'bash' ? 'bg-warning text-dark' : 'bg-primary' }}">
+            {{ strtoupper($script->tipo) }}
+        </span>
+    </div>
+</div>
 
             </div>
         </div>

@@ -14,6 +14,7 @@ class Script extends Model
         'titulo',
         'descripcion',
         'codigo',
+        'tipo',
         'categoria_id',
         'creado_por'
     ];

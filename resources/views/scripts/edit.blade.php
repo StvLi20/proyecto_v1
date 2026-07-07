@@ -84,15 +84,30 @@
                 </div>
 
                 <div class="col-12">
-                    <label class="form-label fw-semibold">Código SQL <span class="text-danger">*</span></label>
-                    <textarea class="form-control font-monospace @error('codigo') is-invalid @enderror"
-                        name="codigo" rows="12"
-                        style="font-size: 0.875rem; background:#1e1e1e; color:#d4d4d4; border-color:#333;">{{ old('codigo', $script->codigo) }}</textarea>
-                    @error('codigo')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+    <label class="form-label fw-semibold">Código <span class="text-danger">*</span></label>
 
+    {{-- Pestañas de tipo --}}
+    <input type="hidden" name="tipo" id="tipo" value="{{ old('tipo', $script->tipo) }}">
+    <ul class="nav nav-tabs mb-0" id="tabsTipo">
+        <li class="nav-item">
+            <button type="button" class="nav-link {{ old('tipo', $script->tipo) === 'sql' ? 'active' : '' }}" id="tab-sql" onclick="cambiarTipo('sql')">
+                <i class="bi bi-database me-1"></i> SQL
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="nav-link {{ old('tipo', $script->tipo) === 'bash' ? 'active' : '' }}" id="tab-bash" onclick="cambiarTipo('bash')">
+                <i class="bi bi-terminal me-1"></i> Bash
+            </button>
+        </li>
+    </ul>
+
+    <textarea class="form-control font-monospace @error('codigo') is-invalid @enderror"
+        name="codigo" id="codigoEditor" rows="12"
+        style="font-size: 0.875rem; background:#1e1e1e; color:#d4d4d4; border-color:#333; border-top-left-radius:0;">{{ old('codigo', $script->codigo) }}</textarea>
+    @error('codigo')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
             </div>
 
             <div class="d-flex gap-2 mt-4">
@@ -109,3 +124,25 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    function cambiarTipo(tipo) {
+        document.getElementById('tipo').value = tipo;
+
+        const tabSql  = document.getElementById('tab-sql');
+        const tabBash = document.getElementById('tab-bash');
+        const editor  = document.getElementById('codigoEditor');
+
+        if (tipo === 'sql') {
+            tabSql.classList.add('active');
+            tabBash.classList.remove('active');
+            editor.placeholder = '-- Pegá tu script SQL aquí';
+        } else {
+            tabBash.classList.add('active');
+            tabSql.classList.remove('active');
+            editor.placeholder = '#!/bin/bash\n# Pegá tu script Bash aquí';
+        }
+    }
+</script>
+@endpush
