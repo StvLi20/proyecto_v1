@@ -15,10 +15,10 @@ class DashboardController extends Controller
     public function index()
     {
         // Tarjetas
-        $totalScripts    = Script::count();
+        $totalScripts = Script::count();
         $totalCategorias = CategoriasScript::count();
-        $totalUsuarios   = Usuario::count();
-        $totalFavoritos  = Favorito::where('usuario_id', Auth::id())->count();
+        $totalUsuarios = Usuario::count();
+        $totalFavoritos = Favorito::where('usuario_id', Auth::id())->count();
 
         // Últimos 5 scripts
         $ultimosScripts = Script::with(['motores', 'categoria', 'autor'])

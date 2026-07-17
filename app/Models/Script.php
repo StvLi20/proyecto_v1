@@ -23,17 +23,17 @@ class Script extends Model
         'deleted_at' => 'datetime',
     ];
 
-    // Motor al que pertenece
-    // Ahora — muchos a muchos
-public function motores()
-{
-    return $this->belongsToMany(
-        Motor::class,
-        'script_motor',
-        'script_id',
-        'motor_id'
-    );
-}
+
+    // Relación muchos a muchos
+    public function motores()
+    {
+        return $this->belongsToMany(
+            Motor::class,
+            'script_motor',
+            'script_id',
+            'motor_id'
+        );
+    }
 
     // Categoría a la que pertenece
     public function categoria()
