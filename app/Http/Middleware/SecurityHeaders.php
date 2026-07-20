@@ -9,37 +9,40 @@ use Symfony\Component\HttpFoundation\Response;
 class SecurityHeaders
 {
     /**
-     * Agrega cabeceras de seguridad HTTP a todas las respuestas
+     * Agrega cabeceras de seguridad HTTP a todas las respuestas.
      */
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
 
-        // PS-01 — Content Security Policy
+        // PS-01 — Content Security Policy (CSP)
         $response->headers->set(
             'Content-Security-Policy',
-            "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:;"
+            "default-src 'self'; " .
+            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
+            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
+            "font-src 'self' https://cdn.jsdelivr.net; " .
+            "img-src 'self' data:; " .
+            "frame-ancestors 'none'; " .
+            "form-action 'self';"
         );
 
-        // PS-03 — Anti-Clickjacking
+        // PS-03 — Protección contra Clickjacking
         $response->headers->set('X-Frame-Options', 'DENY');
 
-        // PS-05 — Ocultar X-Powered-By
+        // PS-05 — Ocultar información del servidor
         $response->headers->remove('X-Powered-By');
 
-        // PS-06 — X-Content-Type-Options
+        // PS-06 — Evita MIME Sniffing
         $response->headers->set('X-Content-Type-Options', 'nosniff');
 
-        // Extra — X-XSS-Protection
+        // Protección XSS (compatibilidad con navegadores antiguos)
         $response->headers->set('X-XSS-Protection', '1; mode=block');
 
-        // Extra — Referrer Policy
-        $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
-
-        // PS-01 — Content Security Policy
+        // Controla la información Referer enviada a otros sitios
         $response->headers->set(
-            'Content-Security-Policy',
-            "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:; frame-ancestors 'none'; form-action 'self';"
+            'Referrer-Policy',
+            'strict-origin-when-cross-origin'
         );
 
         return $response;
