@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
         $middleware->alias([
             'rol' => \App\Http\Middleware\VerificarRol::class,
             'primer_login' => \App\Http\Middleware\VerificarPrimerLogin::class,
