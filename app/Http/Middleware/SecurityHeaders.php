@@ -36,6 +36,12 @@ class SecurityHeaders
         // Extra — Referrer Policy
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
+        // PS-01 — Content Security Policy
+        $response->headers->set(
+            'Content-Security-Policy',
+            "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:; frame-ancestors 'none'; form-action 'self';"
+        );
+
         return $response;
     }
 }
