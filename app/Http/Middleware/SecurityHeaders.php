@@ -30,8 +30,9 @@ class SecurityHeaders
         // PS-03 — Protección contra Clickjacking
         $response->headers->set('X-Frame-Options', 'DENY');
 
-        // PS-05 — Ocultar información del servidor
+        // PS-05 — Ocultar X-Powered-By
         $response->headers->remove('X-Powered-By');
+        header_remove('X-Powered-By');
 
         // PS-06 — Evita MIME Sniffing
         $response->headers->set('X-Content-Type-Options', 'nosniff');
