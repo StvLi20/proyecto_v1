@@ -47,7 +47,7 @@
                             </a>
                             <form method="POST" action="{{ route('admin.etiquetas.destroy', $etiqueta) }}"
                                 class="d-inline"
-                                onsubmit="return confirm('¿Eliminar etiqueta {{ $etiqueta->nombre }}?')">
+                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar la etiqueta {{ $etiqueta->nombre }}?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">

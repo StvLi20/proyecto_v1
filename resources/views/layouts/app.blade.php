@@ -70,7 +70,7 @@
         </nav>
 
         {{-- Sidebar --}}
-        <aside class="app-sidebar bg-dark shadow" data-bs-theme="dark">
+        <aside class="app-sidebar shadow" data-bs-theme="dark" style="background-color: #000000;">
             <div class="sidebar-brand d-flex align-items-center justify-content-center py-3">
                 <img src="{{ asset('img/logo-infatlan.png') }}" alt="INFATLAN"
                     style="height:36px; filter: brightness(0) invert(1);">
@@ -183,12 +183,62 @@
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
-    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
     <!-- AdminLTE -->
     <script src="{{ asset('vendor/adminlte/js/adminlte.min.js') }}"></script>
     @stack('scripts')
+
+    <!-- Modal de confirmación global -->
+    <div class="modal fade" id="modalConfirmar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:380px;">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-body text-center p-4">
+                    <!-- Ícono -->
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                        style="width:40px;height:40px;background:#000000;">
+                        <i class="bi bi-x text-white fs-4"></i>
+                    </div>
+                    <!-- Título -->
+                    <h5 class="fw-bold mb-2" id="modalConfirmarTitulo">Confirmar eliminación</h5>
+                    <!-- Mensaje -->
+                    <p class="text-muted small mb-4" id="modalConfirmarMensaje"></p>
+                    <!-- Botones -->
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-light px-4 rounded-pill" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn px-4 rounded-pill text-white" id="modalConfirmarBtn"
+                            style="background:#000000;">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+                <!-- Botón cerrar -->
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    data-bs-dismiss="modal"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let formPendiente = null;
+
+        function confirmarAccion(form, mensaje, titulo = 'Confirmar eliminación') {
+            formPendiente = form;
+            document.getElementById('modalConfirmarTitulo').textContent = titulo;
+            document.getElementById('modalConfirmarMensaje').textContent = mensaje;
+            new bootstrap.Modal(document.getElementById('modalConfirmar')).show();
+        }
+
+        document.getElementById('modalConfirmarBtn').addEventListener('click', function () {
+            if (formPendiente) {
+                formPendiente.submit();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

@@ -61,7 +61,7 @@
                         <td class="text-center">
                             <form method="POST" action="{{ route('admin.usuarios.restaurar', $usuario->id) }}"
                                 class="d-inline"
-                                onsubmit="return confirm('¿Restaurar usuario {{ $usuario->nombre }}?')">
+                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de restaurar al usuario {{ $usuario->nombre }}?', 'Confirmar restauración')">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-outline-success" title="Restaurar">
                                     <i class="bi bi-arrow-counterclockwise"></i> Restaurar

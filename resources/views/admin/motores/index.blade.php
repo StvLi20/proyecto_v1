@@ -43,7 +43,7 @@
                             </a>
                             <form method="POST" action="{{ route('admin.motores.destroy', $motor) }}"
                                 class="d-inline"
-                                onsubmit="return confirm('¿Eliminar motor {{ $motor->nombre }}?')">
+                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar el motor {{ $motor->nombre }}?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">

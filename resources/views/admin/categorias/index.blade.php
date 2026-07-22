@@ -45,7 +45,7 @@
                             </a>
                             <form method="POST" action="{{ route('admin.categorias.destroy', $categoria) }}"
                                 class="d-inline"
-                                onsubmit="return confirm('¿Eliminar categoría {{ $categoria->nombre }}?')">
+                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar la categoría {{ $categoria->nombre }}?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">

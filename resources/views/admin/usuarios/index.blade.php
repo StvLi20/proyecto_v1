@@ -81,7 +81,7 @@
                             </a>
                             <form method="POST" action="{{ route('admin.usuarios.reset-password', $usuario) }}"
                                 class="d-inline"
-                                onsubmit="return confirm('¿Resetear contraseña de {{ $usuario->nombre }}?')">
+                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Resetear contraseña de {{ $usuario->nombre }}?', 'Confirmar reseteo')">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-outline-warning" title="Resetear contraseña">
                                     <i class="bi bi-key"></i>
@@ -90,7 +90,7 @@
                             @if($usuario->id !== auth()->id())
                             <form method="POST" action="{{ route('admin.usuarios.destroy', $usuario) }}"
                                 class="d-inline"
-                                onsubmit="return confirm('¿Eliminar usuario {{ $usuario->nombre }}?')">
+                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar al usuario {{ $usuario->nombre }}?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">

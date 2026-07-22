@@ -149,7 +149,7 @@
                     <i class="bi bi-pencil me-2"></i>Editar Script
                 </a>
                 <form method="POST" action="{{ route('scripts.destroy', $script) }}"
-                    onsubmit="return confirm('¿Estás seguro de eliminar este script?')">
+                    onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar el script {{ $script->titulo }}?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-outline-danger btn-sm w-100">
