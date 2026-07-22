@@ -85,71 +85,125 @@
             </div>
         </div>
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Título</th>
-                            <th>Motor</th>
-                            <th>Categoría</th>
-                            <th>Autor</th>
-                            <th>Fecha</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($scripts as $script)
-                            <tr>
-                                <td>
-                                    <a href="{{ route('scripts.show', $script) }}" class="text-decoration-none fw-semibold">
-                                        {{ $script->titulo }}
-                                    </a>
-                                    @if($script->descripcion)
-                                        <div class="text-muted small">{{ Str::limit($script->descripcion, 60) }}</div>
-                                    @endif
-                                </td>
-                                <td>
-                                    @foreach($script->motores as $motor)
-                                        <span class="badge bg-primary bg-opacity-10 text-primary me-1">
-                                            {{ $motor->nombre }}
-                                        </span>
-                                    @endforeach
-                                </td>
-                                <td>{{ $script->categoria->nombre }}</td>
-                                <td>{{ $script->autor->nombre }}</td>
-                                <td class="text-muted small">{{ $script->created_at->format('d/m/Y') }}</td>
-                                <td class="text-center">
-                                    <a href="{{ route('scripts.show', $script) }}" class="btn btn-sm btn-outline-secondary"
-                                        title="Ver">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    @if(Auth::id() === $script->creado_por || Auth::user()->rol === 'admin' || Auth::user()->rol === 'dba')
-                                        <a href="{{ route('scripts.edit', $script) }}" class="btn btn-sm btn-outline-primary"
-                                            title="Editar">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <form method="POST" action="{{ route('scripts.destroy', $script) }}" class="d-inline"
-                                            onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar el script {{ $script->titulo }}?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center text-muted py-4">
-                                    <i class="bi bi-inbox fs-4 d-block mb-2"></i>
-                                    No hay scripts registrados
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            {{-- Vista escritorio --}}
+<div class="table-responsive d-none d-xl-block">
+    <table class="table table-hover mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Título</th>
+                <th>Motor</th>
+                <th>Categoría</th>
+                <th>Autor</th>
+                <th>Fecha</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($scripts as $script)
+            <tr>
+                <td>
+                    <a href="{{ route('scripts.show', $script) }}" class="text-decoration-none fw-semibold">
+                        {{ $script->titulo }}
+                    </a>
+                    @if($script->descripcion)
+                        <div class="text-muted small">{{ Str::limit($script->descripcion, 60) }}</div>
+                    @endif
+                </td>
+                <td>
+                    @foreach($script->motores as $motor)
+                        <span class="badge bg-primary bg-opacity-10 text-primary me-1">
+                            {{ $motor->nombre }}
+                        </span>
+                    @endforeach
+                </td>
+                <td>{{ $script->categoria->nombre }}</td>
+                <td>{{ $script->autor->nombre }}</td>
+                <td class="text-muted small">{{ $script->created_at->format('d/m/Y') }}</td>
+                <td class="align-middle">
+    <div class="d-flex justify-content-center align-items-center gap-1">
+        <a href="{{ route('scripts.show', $script) }}" class="btn btn-sm btn-outline-secondary" title="Ver">
+            <i class="bi bi-eye"></i>
+        </a>
+        @if(Auth::id() === $script->creado_por || Auth::user()->rol === 'admin' || Auth::user()->rol === 'dba')
+        <a href="{{ route('scripts.edit', $script) }}" class="btn btn-sm btn-outline-primary" title="Editar">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <form method="POST" action="{{ route('scripts.destroy', $script) }}" class="d-inline"
+            onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar el script {{ $script->titulo }}?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
+        @endif
+    </div>
+</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                    <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                    No hay scripts registrados
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+{{-- Vista móvil --}}
+<div class="d-xl-none">
+    @forelse($scripts as $script)
+    <div class="border-bottom p-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+                <a href="{{ route('scripts.show', $script) }}" class="text-decoration-none fw-semibold">
+                    {{ $script->titulo }}
+                </a>
+                @if($script->descripcion)
+                    <div class="text-muted small">{{ Str::limit($script->descripcion, 60) }}</div>
+                @endif
             </div>
+            <span class="badge {{ $script->tipo === 'bash' ? 'bg-warning text-dark' : 'bg-primary' }} ms-2">
+                {{ strtoupper($script->tipo) }}
+            </span>
+        </div>
+        <div class="d-flex flex-wrap gap-1 mb-2">
+            @foreach($script->motores as $motor)
+                <span class="badge bg-primary bg-opacity-10 text-primary">{{ $motor->nombre }}</span>
+            @endforeach
+            <span class="badge bg-secondary bg-opacity-10 text-secondary">{{ $script->categoria->nombre }}</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center gap-2">
+            <small class="text-muted">{{ $script->autor->nombre }} — {{ $script->created_at->format('d/m/Y') }}</small>
+            <div class="d-flex gap-1 flex-shrink-0">
+                <a href="{{ route('scripts.show', $script) }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                </a>
+                @if(Auth::id() === $script->creado_por || Auth::user()->rol === 'admin' || Auth::user()->rol === 'dba')
+                <a href="{{ route('scripts.edit', $script) }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form method="POST" action="{{ route('scripts.destroy', $script) }}" class="d-inline"
+                    onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar el script {{ $script->titulo }}?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+                @endif
+            </div>
+        </div>
+    </div>
+    @empty
+    <div class="text-center text-muted py-4">
+        <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+        No hay scripts registrados
+    </div>
+    @endforelse
+</div>
         </div>
         @if($scripts->hasPages())
             <div class="card-footer bg-white border-0">
