@@ -22,95 +22,171 @@
 </div>
     </div>
     <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Correo</th>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Creado</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($usuarios as $usuario)
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                @if($usuario->foto)
-                                    <img src="{{ asset('storage/' . $usuario->foto) }}"
-                                        class="rounded-circle"
-                                        style="width:32px; height:32px; object-fit:cover;">
-                                @else
-                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
-                                        style="width:32px; height:32px;">
-                                        <i class="bi bi-person-fill text-white small"></i>
-                                    </div>
-                                @endif
-                                <span class="fw-semibold">{{ $usuario->nombre }}</span>
+        {{-- Vista escritorio --}}
+<div class="table-responsive d-none d-xl-block">
+    <table class="table table-hover mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Usuario</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Creado</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($usuarios as $usuario)
+            <tr>
+                <td class="align-middle">
+                    <div class="d-flex align-items-center gap-2">
+                        @if($usuario->foto)
+                            <img src="{{ asset('storage/' . $usuario->foto) }}"
+                                class="rounded-circle"
+                                style="width:32px; height:32px; object-fit:cover;">
+                        @else
+                            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                                style="width:32px; height:32px;">
+                                <i class="bi bi-person-fill text-white small"></i>
                             </div>
-                        </td>
-                        <td class="text-muted small">{{ $usuario->correo }}</td>
-                        <td>
-                            @if($usuario->rol === 'admin')
-                                <span class="badge bg-danger bg-opacity-10 text-danger">Admin</span>
-                            @elseif($usuario->rol === 'dba')
-                                <span class="badge bg-primary bg-opacity-10 text-primary">DBA</span>
-                            @else
-                                <span class="badge bg-secondary bg-opacity-10 text-secondary">Consulta</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if($usuario->primer_login)
-                                <span class="badge bg-warning bg-opacity-10 text-warning">
-                                    <i class="bi bi-clock me-1"></i>Pendiente
-                                </span>
-                            @else
-                                <span class="badge bg-success bg-opacity-10 text-success">
-                                    <i class="bi bi-check me-1"></i>Activo
-                                </span>
-                            @endif
-                        </td>
-                        <td class="text-muted small">{{ $usuario->created_at->format('d/m/Y') }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('admin.usuarios.edit', $usuario) }}"
-                                class="btn btn-sm btn-outline-primary" title="Editar">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <form method="POST" action="{{ route('admin.usuarios.reset-password', $usuario) }}"
-                                class="d-inline"
-                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Resetear contraseña de {{ $usuario->nombre }}?', 'Confirmar reseteo')">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-warning" title="Resetear contraseña">
-                                    <i class="bi bi-key"></i>
-                                </button>
-                            </form>
-                            @if($usuario->id !== auth()->id())
-                            <form method="POST" action="{{ route('admin.usuarios.destroy', $usuario) }}"
-                                class="d-inline"
-                                onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar al usuario {{ $usuario->nombre }}?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                            @endif
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="text-center text-muted py-4">
-                            <i class="bi bi-people fs-4 d-block mb-2"></i>
-                            No hay usuarios registrados
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                        @endif
+                        <span class="fw-semibold">{{ $usuario->nombre }}</span>
+                    </div>
+                </td>
+                <td class="text-muted small align-middle">{{ $usuario->correo }}</td>
+                <td class="align-middle">
+                    @if($usuario->rol === 'admin')
+                        <span class="badge bg-danger bg-opacity-10 text-danger">Admin</span>
+                    @elseif($usuario->rol === 'dba')
+                        <span class="badge bg-primary bg-opacity-10 text-primary">DBA</span>
+                    @else
+                        <span class="badge bg-secondary bg-opacity-10 text-secondary">Consulta</span>
+                    @endif
+                </td>
+                <td class="align-middle">
+                    @if($usuario->primer_login)
+                        <span class="badge bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-clock me-1"></i>Pendiente
+                        </span>
+                    @else
+                        <span class="badge bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-check me-1"></i>Activo
+                        </span>
+                    @endif
+                </td>
+                <td class="text-muted small align-middle">{{ $usuario->created_at->format('d/m/Y') }}</td>
+                <td class="align-middle">
+                    <div class="d-flex justify-content-center align-items-center gap-1">
+                        <a href="{{ route('admin.usuarios.edit', $usuario) }}"
+                            class="btn btn-sm btn-outline-primary" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="POST" action="{{ route('admin.usuarios.reset-password', $usuario) }}"
+                            class="d-inline"
+                            onsubmit="event.preventDefault(); confirmarAccion(this, '¿Resetear contraseña de {{ $usuario->nombre }}?', 'Confirmar reseteo')">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-warning" title="Resetear contraseña">
+                                <i class="bi bi-key"></i>
+                            </button>
+                        </form>
+                        @if($usuario->id !== auth()->id())
+                        <form method="POST" action="{{ route('admin.usuarios.destroy', $usuario) }}"
+                            class="d-inline"
+                            onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar al usuario {{ $usuario->nombre }}?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                        @endif
+                    </div>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                    <i class="bi bi-people fs-4 d-block mb-2"></i>
+                    No hay usuarios registrados
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+{{-- Vista móvil y tablet --}}
+<div class="d-xl-none">
+    @forelse($usuarios as $usuario)
+    <div class="border-bottom p-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div class="d-flex align-items-center gap-2">
+                @if($usuario->foto)
+                    <img src="{{ asset('storage/' . $usuario->foto) }}"
+                        class="rounded-circle"
+                        style="width:40px; height:40px; object-fit:cover;">
+                @else
+                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                        style="width:40px; height:40px;">
+                        <i class="bi bi-person-fill text-white"></i>
+                    </div>
+                @endif
+                <div>
+                    <div class="fw-semibold">{{ $usuario->nombre }}</div>
+                    <div class="text-muted small">{{ $usuario->correo }}</div>
+                </div>
+            </div>
+            <div class="d-flex gap-1 flex-shrink-0">
+                @if($usuario->rol === 'admin')
+                    <span class="badge bg-danger bg-opacity-10 text-danger">Admin</span>
+                @elseif($usuario->rol === 'dba')
+                    <span class="badge bg-primary bg-opacity-10 text-primary">DBA</span>
+                @else
+                    <span class="badge bg-secondary bg-opacity-10 text-secondary">Consulta</span>
+                @endif
+                @if($usuario->primer_login)
+                    <span class="badge bg-warning bg-opacity-10 text-warning">Pendiente</span>
+                @else
+                    <span class="badge bg-success bg-opacity-10 text-success">Activo</span>
+                @endif
+            </div>
         </div>
+        <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">Creado: {{ $usuario->created_at->format('d/m/Y') }}</small>
+            <div class="d-flex gap-1 flex-shrink-0">
+                <a href="{{ route('admin.usuarios.edit', $usuario) }}"
+                    class="btn btn-sm btn-outline-primary" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form method="POST" action="{{ route('admin.usuarios.reset-password', $usuario) }}"
+                    class="d-inline"
+                    onsubmit="event.preventDefault(); confirmarAccion(this, '¿Resetear contraseña de {{ $usuario->nombre }}?', 'Confirmar reseteo')">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-warning" title="Resetear contraseña">
+                        <i class="bi bi-key"></i>
+                    </button>
+                </form>
+                @if($usuario->id !== auth()->id())
+                <form method="POST" action="{{ route('admin.usuarios.destroy', $usuario) }}"
+                    class="d-inline"
+                    onsubmit="event.preventDefault(); confirmarAccion(this, '¿Estás seguro de eliminar al usuario {{ $usuario->nombre }}?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+                @endif
+            </div>
+        </div>
+    </div>
+    @empty
+    <div class="text-center text-muted py-4">
+        <i class="bi bi-people fs-4 d-block mb-2"></i>
+        No hay usuarios registrados
+    </div>
+    @endforelse
+</div>
     </div>
     @if($usuarios->hasPages())
 <div class="card-footer bg-white border-0">
