@@ -174,6 +174,18 @@
             margin-bottom: 1rem;
             padding: 0.65rem 1rem;
         }
+    .input-group:has(.is-invalid) .input-group-text {
+    border-color: #dc3545;
+}
+
+.input-group:has(.is-invalid) .btn-toggle {
+    border-color: #dc3545;
+}
+.form-control.is-invalid:focus,
+.form-control.is-invalid {
+    box-shadow: none !important;
+}
+        
     </style>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     @stack('styles')
