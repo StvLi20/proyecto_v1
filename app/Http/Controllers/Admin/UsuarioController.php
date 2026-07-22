@@ -48,7 +48,7 @@ class UsuarioController extends Controller
         ]);
 
         // Generar contraseña temporal aleatoria
-        $passwordTemporal = Str::random(12) . 'A1';
+        $passwordTemporal = Str::random(10) . 'A1@#';
 
         Usuario::create([
             'nombre' => $request->nombre,
@@ -104,7 +104,7 @@ class UsuarioController extends Controller
      */
     public function resetPassword(Usuario $usuario)
     {
-        $passwordTemporal = Str::random(12) . 'A1';
+        $passwordTemporal = Str::random(10) . 'A1@#';
 
         $usuario->password = Hash::make($passwordTemporal);
         $usuario->primer_login = true;

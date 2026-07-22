@@ -211,7 +211,7 @@
                         </button>
                         <button type="button" class="btn px-4 rounded-pill text-white" id="modalConfirmarBtn"
                             style="background:#000000;">
-                            Eliminar
+                            Confirmar
                         </button>
                     </div>
                 </div>
@@ -225,12 +225,13 @@
     <script>
         let formPendiente = null;
 
-        function confirmarAccion(form, mensaje, titulo = 'Confirmar eliminación') {
-            formPendiente = form;
-            document.getElementById('modalConfirmarTitulo').textContent = titulo;
-            document.getElementById('modalConfirmarMensaje').textContent = mensaje;
-            new bootstrap.Modal(document.getElementById('modalConfirmar')).show();
-        }
+        function confirmarAccion(form, mensaje, titulo = 'Confirmar eliminación', btnTexto = 'Eliminar') {
+        formPendiente = form;
+        document.getElementById('modalConfirmarTitulo').textContent = titulo;
+        document.getElementById('modalConfirmarMensaje').textContent = mensaje;
+        document.getElementById('modalConfirmarBtn').textContent = btnTexto;
+        new bootstrap.Modal(document.getElementById('modalConfirmar')).show();
+    }
 
         document.getElementById('modalConfirmarBtn').addEventListener('click', function () {
             if (formPendiente) {

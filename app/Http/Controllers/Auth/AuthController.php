@@ -86,12 +86,12 @@ class AuthController extends Controller
     public function cambiarPassword(Request $request)
     {
         $request->validate([
-            'password' => 'required|min:14|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+            'password' => 'required|min:14|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-#]).+$/',
         ], [
             'password.required' => 'La contraseña es obligatoria.',
             'password.min' => 'La contraseña debe tener al menos 14 caracteres.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
-            'password.regex' => 'La contraseña debe contener mayúsculas, minúsculas y números.',
+            'password.regex' => 'La contraseña debe contener mayúsculas, minúsculas, números y un carácter especial (@$!%*?&_-#).',
         ]);
 
         // Actualizar password y marcar primer_login como false

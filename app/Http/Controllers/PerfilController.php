@@ -54,19 +54,17 @@ class PerfilController extends Controller
 {
     $request->validate([
         'password_actual' => 'required',
-        'password_nuevo'  => 'required|min:14|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+        'password_nuevo'  => 'required|min:14|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-#]).+$/',
     ], [
         'password_actual.required' => 'Ingresá tu contraseña actual.',
         'password_nuevo.required'  => 'Ingresá la nueva contraseña.',
         'password_nuevo.min'       => 'La contraseña debe tener al menos 14 caracteres.',
         'password_nuevo.confirmed' => 'Las contraseñas no coinciden.',
-        'password_nuevo.regex'     => 'La contraseña debe contener mayúsculas, minúsculas y números.',
+        'password_nuevo.regex'     => 'La contraseña debe contener mayúsculas, minúsculas, números y un carácter especial (@$!%*?&_-#).',
     ]);
 
-    // Buscar usuario fresco de la BD sin hidden filters
     $usuario = \App\Models\Usuario::find(Auth::id());
 
-    // Verificar contraseña actual
     if (!Hash::check($request->password_actual, $usuario->password)) {
         return back()->withErrors(['password_actual' => 'La contraseña actual es incorrecta.']);
     }

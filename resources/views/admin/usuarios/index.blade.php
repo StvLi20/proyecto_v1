@@ -83,7 +83,7 @@
                         </a>
                         <form method="POST" action="{{ route('admin.usuarios.reset-password', $usuario) }}"
                             class="d-inline"
-                            onsubmit="event.preventDefault(); confirmarAccion(this, '¿Resetear contraseña de {{ $usuario->nombre }}?', 'Confirmar reseteo')">
+                            onsubmit="event.preventDefault(); confirmarAccion(this, '¿Resetear contraseña de {{ $usuario->nombre }}?', 'Confirmar reseteo', 'Resetear')"
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline-warning" title="Resetear contraseña">
                                 <i class="bi bi-key"></i>

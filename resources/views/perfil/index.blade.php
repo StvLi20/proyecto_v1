@@ -90,17 +90,18 @@
 <div class="mb-3">
     <label class="form-label fw-semibold">Nueva contraseña</label>
     <div class="input-group">
-        <input type="password"
-            class="form-control @error('password_nuevo') is-invalid @enderror"
-            name="password_nuevo" id="password_nuevo" required>
-        <button class="btn btn-outline-secondary" type="button" onclick="togglePass('password_nuevo', 'eye2')">
-            <i class="bi bi-eye" id="eye2"></i>
-        </button>
-    </div>
-    @error('password_nuevo')
-        <div class="text-danger small mt-1">{{ $message }}</div>
-    @enderror
-    <div class="form-text">Mínimo 14 caracteres, mayúsculas, minúsculas y números.</div>
+    <input type="password"
+        class="form-control @error('password_nuevo') is-invalid @enderror"
+        name="password_nuevo" id="password_nuevo" required>
+    <button class="btn btn-outline-secondary" type="button" onclick="togglePass('password_nuevo', 'eye2')">
+        <i class="bi bi-eye" id="eye2"></i>
+    </button>
+</div>
+@error('password_nuevo')
+    <div class="text-danger small mt-1">{{ $message }}</div>
+@else
+    <div class="form-text">Mínimo 14 caracteres, mayúsculas, minúsculas, números y un carácter especial (@$!%*?&_-#).</div>
+@enderror
 </div>
 
 <div class="mb-4">
