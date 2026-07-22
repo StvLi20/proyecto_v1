@@ -83,7 +83,7 @@ class ScriptController extends Controller
         ], [
             'titulo.required' => 'El título es obligatorio.',
             'titulo.max' => 'El título no puede superar 200 caracteres.',
-            'codigo.required' => 'El código SQL es obligatorio.',
+            'codigo.required' => 'El código es obligatorio.',
             'tipo.required' => 'Seleccioná el tipo de script.',
             'tipo.in' => 'El tipo debe ser SQL o Bash.',
             'motores.required' => 'Seleccioná al menos un motor.',

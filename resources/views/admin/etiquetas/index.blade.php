@@ -6,7 +6,7 @@
 @section('content')
 
 <div class="card border-0 shadow-sm">
-    <<div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-3">
     <h6 class="fw-bold mb-0">
         <i class="bi bi-tag me-2 text-muted"></i>
         Etiquetas <span class="badge bg-secondary ms-1">{{ $etiquetas->count() }}</span>
